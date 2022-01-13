@@ -1,0 +1,38 @@
+version: '3.1'
+
+services:
+    # db:
+    #     container_name: database
+    #     image: sameersbn/postgresql:10-2
+    #     environment:
+    #         PG_PASSWORD: $PG_PASSWORD
+    #     restart: always
+    #     ports:
+    #         - 5432:5432
+    #     networks:
+    #         - botnet
+    #     volumes:
+    #         - ./pgdata:/var/lib/postgresql
+
+
+    tgbot:
+        container_name: bot
+        build:
+            context: .
+        command: poetry run python app.py
+        restart: always
+        networks:
+            - botnet
+        env_file:
+            - ".env"
+        volumes:
+            - .:/src
+        environment:
+            - /root/.cache/pypoetry/virtualenvs/maintemplate-VsnhxLU2-py3.8
+        # depends_on:
+        #     - db
+
+
+networks:
+    botnet:
+        driver: bridge
